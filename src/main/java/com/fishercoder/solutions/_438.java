@@ -99,4 +99,39 @@ public class _438 {
             return result;
         }
     }
+     
+    public static class Solution3 {
+        public List<Integer> findAnagrams(String s, String p) {
+            List<Integer> result = new ArrayList<>();
+            int pLen = p.length();
+            if (pLen > s.length()) return result;
+
+            for (int i = 0; i < pLen; i++) {
+              TC[s.charAt(i)]++;
+              PC[p.charAt(i)]++;
+            }
+
+            // Traverse through remaining characters of pattern
+            for (int i = pLen; i < s.length(); i++) {
+              if (compare()) result.add(i - pLen);
+
+              // Add current character to current window
+              TC[s.charAt(i)]++;
+              // Remove the first character of previous window
+              TC[s.charAt(i - pLen)]--;
+            }
+
+            // Check for the last window in text
+            if (compare()) result.add(s.length() - pLen);
+
+            return result;
+        }
+
+        private boolean compare() {
+          for (int i = 0; i < 256; i++) {
+            if (TC[i] != PC[i]) return false;
+          }
+          return true;
+        } 
+    }
 }
